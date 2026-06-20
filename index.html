@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<title>AI Buddy</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;background:#eee;padding:20px}
+.box{max-width:700px;margin:auto;background:white;padding:20px;border-radius:15px}
+#chat{height:400px;overflow:auto;border:1px solid #ddd;padding:10px}
+input{width:75%;padding:12px}button{padding:12px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>AI Buddy 🤖</h2>
+<div id="chat"></div><br>
+<input id="m" placeholder="Ask me anything">
+<button onclick="send()">Send</button>
+</div>
+<script>
+async function send(){
+ let i=document.getElementById("m"),c=document.getElementById("chat");
+ let t=i.value;if(!t)return;
+ c.innerHTML+="<p><b>You:</b> "+t+"</p>";
+ let r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t})});
+ let d=await r.json();
+ c.innerHTML+="<p><b>AI:</b> "+d.reply+"</p>";
+ i.value="";
+}
+</script>
+</body>
+</html>
